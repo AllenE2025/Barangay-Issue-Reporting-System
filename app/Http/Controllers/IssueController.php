@@ -3,17 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Issue;
+use Inertia\Response;
 
 class IssueController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        $issues = Issue::with('user')->latest()->get();
+        /** @var \App\Models\User $user */
+
+        $user = Auth::user();
+        $issues= $user->issues()->with('user')->latest()->get();
 
         return Inertia::render('Issues/Index', ['issues' => $issues,]);
     }
@@ -31,18 +36,14 @@ class IssueController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'location' => 'nullable|string|max:255'
+            'category' => 'required|string',
+            'location' => 'required|string|max:255'
         ]);
 
-        Issue::create([
-            'user_id' => $request->user()->id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'location' => $request->location,
-        ]);
+        $request->user()->issues()->create($validated);
 
         return redirect()->route('issues.index')->with('success', 'Issue submitted!');
     }

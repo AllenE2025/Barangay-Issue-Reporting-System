@@ -16,8 +16,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
+            $table->string('category');
             $table->enum('status',['pending','in_progress','resolved'])->default('pending');
             $table->string('location')->nullable();
+            $table->text('admin_notes')->nullable();
             $table->timestamps();
         });
     }
