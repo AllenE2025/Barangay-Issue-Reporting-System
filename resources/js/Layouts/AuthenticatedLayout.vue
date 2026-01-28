@@ -36,6 +36,11 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('issues.create')" :active="route().current('issues.create')">
                                     Report Issue
                                 </NavLink>
+                                <!-- Add this after other NavLinks, but only show if user is admin -->
+                                <NavLink v-if="($page.props.auth.user as any)?.role === 'admin'"
+                                    :href="route('admin.issues.index')" :active="route().current('admin.issues.*')">
+                                    Admin Dashboard
+                                </NavLink>
                             </div>
                         </div>
 

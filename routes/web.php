@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\IssueController;
+use App\Http\Controllers\Admin\AdminIssueController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('issues', IssueController::class);
+});
+
+// Admin routes - protected by 'admin' middleware
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/issues', [AdminIssueController::class, 'index'])->name('issues.index');
+    Route::get('/issues/{issue}', [AdminIssueController::class, 'show'])->name('issues.show');
+    Route::patch('/issues/{issue}', [AdminIssueController::class, 'update'])->name('issues.update');
 });
 
 require __DIR__ . '/auth.php';
