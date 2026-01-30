@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import {
+    PencilSquareIcon,
+    EyeIcon,
+    CheckBadgeIcon,
+    WrenchScrewdriverIcon,
+    TrashIcon,
+    ShieldExclamationIcon,
+    SpeakerWaveIcon,
+    SparklesIcon,
+    DocumentTextIcon
+} from '@heroicons/vue/24/outline';
 
 defineProps<{
     canLogin?: boolean;
@@ -17,8 +28,9 @@ defineProps<{
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
-                        <h1 class="text-xl font-bold text-gray-900">
-                            🏘️ Barangay Issue System
+                        <h1 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                            <DocumentTextIcon class="h-6 w-6 text-blue-600" />
+                            Barangay Issue System
                         </h1>
                     </div>
                     <div class="flex items-center space-x-4" v-if="canLogin">
@@ -75,9 +87,8 @@ defineProps<{
             <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 <!-- Feature 1 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <div
-                        class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white text-2xl mb-4">
-                        📝
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                        <PencilSquareIcon class="h-6 w-6" />
                     </div>
                     <h3 class="text-lg font-medium text-gray-900 mb-2">
                         Report Issues
@@ -90,9 +101,8 @@ defineProps<{
 
                 <!-- Feature 2 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <div
-                        class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white text-2xl mb-4">
-                        👁️
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                        <EyeIcon class="h-6 w-6" />
                     </div>
                     <h3 class="text-lg font-medium text-gray-900 mb-2">
                         Track Progress
@@ -105,9 +115,8 @@ defineProps<{
 
                 <!-- Feature 3 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <div
-                        class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white text-2xl mb-4">
-                        ✅
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                        <CheckBadgeIcon class="h-6 w-6" />
                     </div>
                     <h3 class="text-lg font-medium text-gray-900 mb-2">
                         Get Results
@@ -131,27 +140,39 @@ defineProps<{
 
                 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
                     <div class="bg-white p-4 rounded-lg shadow text-center">
-                        <div class="text-3xl mb-2">🏗️</div>
+                        <div class="flex justify-center mb-2">
+                            <WrenchScrewdriverIcon class="h-8 w-8 text-blue-600" />
+                        </div>
                         <p class="text-sm font-medium text-gray-900">Infrastructure</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow text-center">
-                        <div class="text-3xl mb-2">🚮</div>
+                        <div class="flex justify-center mb-2">
+                            <TrashIcon class="h-8 w-8 text-blue-600" />
+                        </div>
                         <p class="text-sm font-medium text-gray-900">Sanitation</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow text-center">
-                        <div class="text-3xl mb-2">🚨</div>
+                        <div class="flex justify-center mb-2">
+                            <ShieldExclamationIcon class="h-8 w-8 text-blue-600" />
+                        </div>
                         <p class="text-sm font-medium text-gray-900">Safety</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow text-center">
-                        <div class="text-3xl mb-2">🔊</div>
+                        <div class="flex justify-center mb-2">
+                            <SpeakerWaveIcon class="h-8 w-8 text-blue-600" />
+                        </div>
                         <p class="text-sm font-medium text-gray-900">Noise</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow text-center">
-                        <div class="text-3xl mb-2">🌳</div>
+                        <div class="flex justify-center mb-2">
+                            <SparklesIcon class="h-8 w-8 text-blue-600" />
+                        </div>
                         <p class="text-sm font-medium text-gray-900">Environment</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow text-center">
-                        <div class="text-3xl mb-2">📋</div>
+                        <div class="flex justify-center mb-2">
+                            <DocumentTextIcon class="h-8 w-8 text-blue-600" />
+                        </div>
                         <p class="text-sm font-medium text-gray-900">Other</p>
                     </div>
                 </div>
