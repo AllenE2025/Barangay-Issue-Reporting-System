@@ -5,6 +5,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import {
+    LockClosedIcon,
+    EnvelopeIcon,
+    CheckCircleIcon
+} from '@heroicons/vue/24/outline';
 
 const props = defineProps<{
     email: string;
@@ -29,66 +34,82 @@ const submit = () => {
 
 <template>
     <GuestLayout>
+
         <Head title="Reset Password" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <!-- Header -->
+        <div class="mb-6 text-center">
+            <div class="flex justify-center mb-3">
+                <div class="bg-blue-100 rounded-full p-3">
+                    <LockClosedIcon class="h-8 w-8 text-blue-600" />
+                </div>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900">Reset Your Password</h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Enter your new password below
+            </p>
+        </div>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+        <!-- Info Message -->
+        <div class="mb-6 p-4 rounded-lg bg-blue-50 border border-blue-200">
+            <p class="text-sm text-blue-800">
+                Choose a strong password with at least 8 characters.
+            </p>
+        </div>
+
+        <form @submit.prevent="submit" class="space-y-5">
+            <!-- Email (Read-only) -->
+            <div>
+                <InputLabel for="email" value="Email Address" />
+
+                <div class="relative mt-1">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <EnvelopeIcon class="h-5 w-5 text-gray-400" />
+                    </div>
+                    <TextInput id="email" type="email" class="block w-full pl-10 bg-gray-50" v-model="form.email"
+                        required autofocus autocomplete="username" readonly />
+                </div>
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+            <!-- New Password -->
+            <div>
+                <InputLabel for="password" value="New Password" />
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+                <div class="relative mt-1">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <LockClosedIcon class="h-5 w-5 text-gray-400" />
+                    </div>
+                    <TextInput id="password" type="password" class="block w-full pl-10" v-model="form.password" required
+                        autocomplete="new-password" placeholder="••••••••" />
+                </div>
 
                 <InputError class="mt-2" :message="form.errors.password" />
+                <p class="mt-1 text-xs text-gray-500">Must be at least 8 characters</p>
             </div>
 
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
+            <!-- Confirm Password -->
+            <div>
+                <InputLabel for="password_confirmation" value="Confirm New Password" />
 
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
+                <div class="relative mt-1">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <LockClosedIcon class="h-5 w-5 text-gray-400" />
+                    </div>
+                    <TextInput id="password_confirmation" type="password" class="block w-full pl-10"
+                        v-model="form.password_confirmation" required autocomplete="new-password"
+                        placeholder="••••••••" />
+                </div>
 
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
+                <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <PrimaryButton
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
+            <!-- Submit Button -->
+            <div class="pt-2">
+                <PrimaryButton class="w-full justify-center" :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing">
+                    <CheckCircleIcon class="h-5 w-5 mr-2" />
                     Reset Password
                 </PrimaryButton>
             </div>
