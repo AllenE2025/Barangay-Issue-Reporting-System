@@ -34,6 +34,10 @@ defineProps<{
                         </h1>
                     </div>
                     <div class="flex items-center space-x-4" v-if="canLogin">
+                        <Link :href="route('public.issues')"
+                            class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                            Community Progress
+                        </Link>
                         <Link :href="route('login')"
                             class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                             Log in

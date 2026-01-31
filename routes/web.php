@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\IssueController;
+use App\Http\Controllers\PublicIssueController;
 use App\Http\Controllers\Admin\AdminIssueController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -15,9 +16,11 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
-Route::get('/dashboard', [DashboardController::class, 'index']
+Route::get(
+    '/dashboard',
+    [DashboardController::class, 'index']
 )->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -33,5 +36,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/issues/{issue}', [AdminIssueController::class, 'show'])->name('issues.show');
     Route::patch('/issues/{issue}', [AdminIssueController::class, 'update'])->name('issues.update');
 });
+
+// Public route (no authentication required)
+Route::get('/community-progress', [PublicIssueController::class, 'index'])->name('public.issues');
 
 require __DIR__ . '/auth.php';
