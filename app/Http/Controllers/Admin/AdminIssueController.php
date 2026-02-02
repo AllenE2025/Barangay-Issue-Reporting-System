@@ -13,7 +13,7 @@ class AdminIssueController extends Controller
     // Show all issues for admin
     public function index(): Response
     {
-        $issues = Issue::with('user')->latest()->get();
+        $issues = Issue::with('user', 'photos')->latest()->get();
 
         return Inertia::render('Admin/Issues/Index', [
             'issues' => $issues,
@@ -24,7 +24,7 @@ class AdminIssueController extends Controller
     public function show(Issue $issue): Response
     {
         return Inertia::render('Admin/Issues/Show', [
-            'issue' => $issue->load('user'),
+            'issue' => $issue->load('user', 'photos'),
         ]);
     }
 

@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { Link, Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { PhotoIcon } from '@heroicons/vue/24/outline';
+
+interface Photo {
+    id: number;
+    filename: string;
+    path: string;
+    url: string;
+}
 
 interface Issue {
     id: number;
@@ -10,6 +18,7 @@ interface Issue {
     location: string;
     status: string;
     created_at: string;
+    photos?: Photo[];
     user: {
         name: string;
     };
@@ -49,13 +58,14 @@ defineProps<{
                                         <th class="border px-4 py-2 text-left">Title</th>
                                         <th class="border px-4 py-2 text-left">Category</th>
                                         <th class="border px-4 py-2 text-left">Location</th>
+                                        <th class="border px-4 py-2 text-left">Photos</th>
                                         <th class="border px-4 py-2 text-left">Status</th>
                                         <th class="border px-4 py-2 text-left">Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-if="issues.length === 0">
-                                        <td colspan="5" class="border px-4 py-2 text-center text-gray-500">
+                                        <td colspan="6" class="border px-4 py-2 text-center text-gray-500">
                                             No issues yet. Submit your first issue!
                                         </td>
                                     </tr>
@@ -65,6 +75,17 @@ defineProps<{
                                         </td>
                                         <td class="border px-4 py-2">{{ issue.category }}</td>
                                         <td class="border px-4 py-2">{{ issue.location }}</td>
+                                        <td class="border px-4 py-2">
+                                            <div v-if="issue.photos && issue.photos.length > 0" class="flex gap-1">
+                                                <img v-for="photo in issue.photos.slice(0, 3)" :key="photo.id"
+                                                    :src="`/storage/${photo.path}`" :alt="photo.filename"
+                                                    class="w-12 h-12 object-cover rounded border" />
+                                            </div>
+                                            <div v-else class="flex items-center gap-1 text-gray-400 text-sm">
+                                                <PhotoIcon class="h-4 w-4" />
+                                                <span>No photos</span>
+                                            </div>
+                                        </td>
                                         <td class="border px-4 py-2">
                                             <span :class="{
                                                 'bg-yellow-100 text-yellow-800': issue.status === 'pending',

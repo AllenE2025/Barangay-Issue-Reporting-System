@@ -16,11 +16,12 @@ class IssueController extends Controller
     public function index(): Response
     {
         /** @var \App\Models\User $user */
-
         $user = Auth::user();
-        $issues= $user->issues()->with('user')->latest()->get();
+        $issues = $user->issues()->with('user', 'photos')->latest()->get();
 
-        return Inertia::render('Issues/Index', ['issues' => $issues,]);
+        return Inertia::render('Issues/Index', [
+            'issues' => $issues,
+        ]);
     }
 
     /**
@@ -40,12 +41,36 @@ class IssueController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'category' => 'required|string',
-            'location' => 'required|string|max:255'
+            'location' => 'required|string|max:255',
+            'photos.*' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', // 5MB max per image
         ]);
 
-        $request->user()->issues()->create($validated);
+    // Create the issue
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+        $issue = $user->issues()->create([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'category' => $validated['category'],
+            'location' => $validated['location'],
+        ]);
 
-        return redirect()->route('issues.index')->with('success', 'Issue submitted!');
+        // Handle photo uploads
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                // Store the photo in storage/app/public/issue-photos
+                $path = $photo->store('issue-photos', 'public');
+
+                // Save photo info to database
+                $issue->photos()->create([
+                    'filename' => $photo->getClientOriginalName(),
+                    'path' => $path,
+                    'size' => $photo->getSize(),
+                ]);
+            }
+        }
+
+        return redirect()->route('issues.index')->with('success', 'Issue submitted successfully!');
     }
 
     /**

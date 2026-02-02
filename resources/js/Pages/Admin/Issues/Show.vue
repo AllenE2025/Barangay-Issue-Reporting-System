@@ -5,6 +5,12 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
 
+interface Photo {
+    id: number;
+    filename: string;
+    path: string;
+}
+
 interface Issue {
     id: number;
     title: string;
@@ -14,6 +20,7 @@ interface Issue {
     status: string;
     admin_notes: string | null;
     created_at: string;
+    photos?: Photo[];
     user: {
         name: string;
         email: string;
@@ -50,7 +57,7 @@ const submit = () => {
                 <!-- Issue Details -->
                 <div class="bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-4">Issue Details</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Issue Details</h3>
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>
@@ -82,10 +89,29 @@ const submit = () => {
                     </div>
                 </div>
 
+                <!-- Photos Section -->
+                <div v-if="issue.photos && issue.photos.length > 0" class="bg-white shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Photos</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div v-for="photo in issue.photos" :key="photo.id" class="group relative">
+                                <a :href="`/storage/${photo.path}`" target="_blank" rel="noopener noreferrer"
+                                    class="block">
+                                    <img :src="`/storage/${photo.path}`" :alt="photo.filename"
+                                        class="w-full h-48 object-cover rounded-lg border-2 border-gray-200 group-hover:border-blue-500 transition" />
+                                    <div
+                                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition rounded-lg pointer-events-none">
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Update Status Form -->
                 <div class="bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-4">Update Issue Status</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Update Issue Status</h3>
 
                         <form @submit.prevent="submit">
                             <!-- Status -->
