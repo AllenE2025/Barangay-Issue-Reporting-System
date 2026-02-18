@@ -142,7 +142,7 @@ const monthlyChange = computed(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ isAdmin ? 'Admin Dashboard' : 'My Dashboard' }}
+                {{ isAdmin ? 'Issues Overview' : 'My Issues Overview' }}
             </h2>
         </template>
 

@@ -28,12 +28,14 @@ const showingNavigationDropdown = ref(false);
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Overview
                                 </NavLink>
-                                <NavLink :href="route('issues.index')" :active="route().current('issues.index')">
+                                <NavLink v-if="($page.props.auth.user as any)?.role === 'user'"
+                                    :href="route('issues.index')" :active="route().current('issues.index')">
                                     My Issues
                                 </NavLink>
-                                <NavLink :href="route('issues.create')" :active="route().current('issues.create')">
+                                <NavLink v-if="($page.props.auth.user as any)?.role === 'user'"
+                                    :href="route('issues.create')" :active="route().current('issues.create')">
                                     Report Issue
                                 </NavLink>
                                 <!-- Add this after other NavLinks, but only show if user is admin -->
@@ -109,7 +111,7 @@ const showingNavigationDropdown = ref(false);
                 }" class="sm:hidden">
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Overview
                         </ResponsiveNavLink>
                     </div>
 
