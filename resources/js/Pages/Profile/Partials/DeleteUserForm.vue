@@ -16,13 +16,10 @@ import {
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref<HTMLInputElement | null>(null);
 
-const form = useForm({
-    password: '',
-});
+const form = useForm({ password: '' });
 
 const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
-
     nextTick(() => passwordInput.value?.focus());
 };
 
@@ -31,34 +28,29 @@ const deleteUser = () => {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onError: () => passwordInput.value?.focus(),
-        onFinish: () => {
-            form.reset();
-        },
+        onFinish: () => { form.reset(); },
     });
 };
 
 const closeModal = () => {
     confirmingUserDeletion.value = false;
-
     form.clearErrors();
     form.reset();
 };
 </script>
 
 <template>
-    <section class="space-y-6">
-        <header>
-            <div class="flex items-center gap-3 mb-2">
-                <div class="bg-red-100 rounded-lg p-2">
-                    <ExclamationTriangleIcon class="h-5 w-5 text-red-600" />
+    <section class="profile-section">
+        <header class="profile-section-header">
+            <div class="section-title-row">
+                <div class="section-icon-wrap section-icon-red">
+                    <ExclamationTriangleIcon class="section-icon" />
                 </div>
-                <h2 class="text-lg font-medium text-gray-900">
-                    Delete Account
-                </h2>
+                <h2 class="section-title">Delete Account</h2>
             </div>
-
-            <div class="p-4 rounded-lg bg-red-50 border border-red-200">
-                <p class="text-sm text-red-800">
+            <div class="alert-msg alert-danger">
+                <ExclamationTriangleIcon class="alert-icon" />
+                <p class="alert-text">
                     <strong>Warning:</strong> Once your account is deleted, all of its resources and data will be
                     permanently deleted. Before deleting your account, please download any data or information that you
                     wish to retain.
@@ -66,65 +58,194 @@ const closeModal = () => {
             </div>
         </header>
 
-        <DangerButton @click="confirmUserDeletion" class="inline-flex items-center gap-2">
-            <TrashIcon class="h-5 w-5" />
-            Delete Account
-        </DangerButton>
+        <div style="padding-top: 0.25rem;">
+            <button @click="confirmUserDeletion" class="delete-trigger-btn">
+                <TrashIcon class="btn-icon" />
+                Delete Account
+            </button>
+        </div>
 
+        <!-- Confirmation Modal -->
         <Modal :show="confirmingUserDeletion" @close="closeModal">
-            <div class="p-6">
-                <!-- Modal Header -->
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="bg-red-100 rounded-full p-3 flex-shrink-0">
-                        <ExclamationTriangleIcon class="h-8 w-8 text-red-600" />
+            <div class="delete-modal">
+
+                <!-- Modal header -->
+                <div class="modal-header">
+                    <div class="modal-icon-wrap">
+                        <ExclamationTriangleIcon class="modal-icon" />
                     </div>
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-900">
-                            Delete Account?
-                        </h2>
-                        <p class="mt-2 text-sm text-gray-600">
-                            This action cannot be undone. This will permanently delete your account and remove all your
-                            data from our servers.
-                        </p>
+                        <h2 class="modal-title">Delete Account?</h2>
+                        <p class="modal-subtitle">This action cannot be undone. This will permanently delete your
+                            account and remove all your data from our servers.</p>
                     </div>
                 </div>
 
-                <!-- Warning Box -->
-                <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200">
-                    <p class="text-sm text-red-800">
-                        Once your account is deleted, all of your issues, reports, and personal information will be
-                        permanently deleted. Please enter your password to confirm.
-                    </p>
+                <!-- Warning -->
+                <div class="alert-msg alert-danger" style="margin-bottom: 1.5rem;">
+                    <ExclamationTriangleIcon class="alert-icon" />
+                    <p class="alert-text">Once your account is deleted, all of your issues, reports, and personal
+                        information will be permanently deleted. Please enter your password to confirm.</p>
                 </div>
 
-                <!-- Password Input -->
-                <div>
-                    <InputLabel for="password" value="Confirm Password" />
-
-                    <div class="relative mt-1">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <LockClosedIcon class="h-5 w-5 text-gray-400" />
-                        </div>
+                <!-- Password -->
+                <div class="field" style="margin-bottom: 1.5rem;">
+                    <InputLabel for="password" value="Confirm Password" class="field-label" />
+                    <div class="input-icon-wrap">
+                        <!-- <LockClosedIcon class="input-left-icon" /> -->
                         <TextInput id="password" ref="passwordInput" v-model="form.password" type="password"
-                            class="block w-full pl-10" placeholder="Enter your password" @keyup.enter="deleteUser" />
+                            class="block w-full field-input field-input-icon" placeholder="Enter your password"
+                            @keyup.enter="deleteUser" />
                     </div>
-
                     <InputError :message="form.errors.password" class="mt-2" />
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="mt-6 flex justify-end gap-3">
-                    <SecondaryButton @click="closeModal">
-                        Cancel
-                    </SecondaryButton>
-
-                    <DangerButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
-                        @click="deleteUser" class="inline-flex items-center gap-2">
-                        <TrashIcon class="h-5 w-5" />
+                <!-- Buttons -->
+                <div class="modal-footer">
+                    <button @click="closeModal" class="cancel-btn">Cancel</button>
+                    <button @click="deleteUser" :disabled="form.processing" :class="{ 'opacity-25': form.processing }"
+                        class="confirm-delete-btn">
+                        <TrashIcon class="btn-icon" />
                         Delete Account
-                    </DangerButton>
+                    </button>
                 </div>
             </div>
         </Modal>
     </section>
 </template>
+
+<style>
+/* Danger alert variant */
+.alert-danger {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    margin-top: 0.5rem;
+}
+
+.alert-danger .alert-icon {
+    color: #dc2626;
+}
+
+.alert-danger .alert-text {
+    color: #991b1b;
+}
+
+/* Delete trigger button */
+.delete-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    color: #dc2626;
+    border: 2px solid #dc2626;
+    border-radius: 10px;
+    padding: 9px 20px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.delete-trigger-btn:hover {
+    background: #dc2626;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(220, 38, 38, 0.25);
+}
+
+/* Modal */
+.delete-modal {
+    padding: 2rem;
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-icon-wrap {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-icon {
+    width: 24px;
+    height: 24px;
+    color: #dc2626;
+}
+
+.modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0 0 0.35rem;
+}
+
+.modal-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Cancel button */
+.cancel-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 9px 20px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+}
+
+/* Confirm delete button */
+.confirm-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #dc2626;
+    color: white;
+    border: 2px solid #dc2626;
+    border-radius: 9px;
+    padding: 9px 20px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.confirm-delete-btn:hover:not(:disabled) {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(220, 38, 38, 0.3);
+}
+</style>
