@@ -46,3 +46,33 @@ A web-based issue reporting system for barangay communities to report and track 
 1. **Pending** - Newly submitted, awaiting review
 2. **In Progress** - Being worked on by barangay officials
 3. **Resolved** - Issue has been fixed/addressed
+
+## 📸 Screenshots
+
+### 🏠 Home Screen
+The public-facing landing page where residents can learn about the platform and get started.
+
+![Home Screen](screenshots/home_screen.png)
+
+---
+
+### 🌍 Community Progress
+A public transparency dashboard showing resolved issues and overall community statistics — no login required.
+
+![Community Progress](screenshots/community_screen.png)
+
+---
+
+### 👤 User Dashboard
+Logged-in residents can view their submitted issues, track statuses, and report new ones.
+
+![User Dashboard](screenshots/user_page.png)
+
+---
+
+### 🛠️ Admin Dashboard
+Administrators have access to a full issues overview with category and status breakdowns via charts.
+
+![Admin Dashboard](screenshots/admin_page.png)
+
+---
